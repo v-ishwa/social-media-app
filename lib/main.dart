@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:social_media_app/features/auth/presentation/pages/login_page.dart';
 import 'package:social_media_app/firebase_options.dart';
+import 'package:social_media_app/themes/light_mode.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized;
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   
   runApp(const MyApp());
@@ -12,11 +14,12 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Social Media App',
-      home: Scaffold(),
+      home: const LoginPage(),
+      theme: lightMode,
       debugShowCheckedModeBanner: false,
     );
   }
