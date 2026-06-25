@@ -1,42 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:social_media_app/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:social_media_app/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:social_media_app/features/auth/presentation/widgets/login_button.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final void Function() togglePages;
-  const LoginPage({required this.togglePages, super.key});
+  const RegisterPage({required this.togglePages, super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
+  final nameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-
-  void login() async {
-    final String email = emailController.text.trim();
-    final String password = passwordController.text.trim();
-
-    final authCubit = context.read<AuthCubit>();
-
-    if (email.isNotEmpty && password.isNotEmpty) {
-      await authCubit.login(email, password);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter email and password')),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
-  }
+  final confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 50),
                 Text(
-                  'Welcome back, you\'ve been missed!',
+                  'Let\'s create an account',
                   style: TextStyle(
                     color: Theme.of(context).colorScheme.primary,
                     fontSize: 16,
@@ -63,6 +41,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 25),
+                AuthTextField(
+                  controller: nameController,
+                  hintText: 'Name',
+                  obscureText: false,
+                ),
+                const SizedBox(height: 10),
                 AuthTextField(
                   controller: emailController,
                   hintText: 'Email',
@@ -74,14 +58,20 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: 'Password',
                   obscureText: true,
                 ),
+                const SizedBox(height: 10),
+                AuthTextField(
+                  controller: confirmPasswordController,
+                  hintText: 'Confirm Password',
+                  obscureText: true,
+                ),
                 const SizedBox(height: 25),
-                LoginButton(onTap: login, text: 'Login'),
+                LoginButton(onTap: () {}, text: 'Register'),
                 const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Not registered yet? ',
+                      'Already have an account? ',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.primary,
                       ),
@@ -89,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                       onTap: widget.togglePages,
                       child: Text(
-                        'Register',
+                        'Login',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.inversePrimary,
                           fontWeight: FontWeight.bold,
