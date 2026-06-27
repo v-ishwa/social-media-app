@@ -21,19 +21,27 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: BlocConsumer<AuthCubit, AuthState>(
           builder: (context, authState) {
+            // print('authstate: $authState');
             if (authState is UnAuthenticated) {
               return const AuthPage();
             }
-
             if (authState is Authenticated) {
               return const HomePage();
             }
-
-            return Scaffold(
-              body: const Center(child: CircularProgressIndicator()),
-            );
+            if (authState is AuthLoading) {
+              return Scaffold(
+                body: const Center(child: CircularProgressIndicator()),
+              );
+            }
+            return const AuthPage();
           },
-          listener: (context, state) {},
+          listener: (context, authState) {
+            if (authState is AuthError) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(authState.message)));
+            }
+          },
         ),
       ),
     );
