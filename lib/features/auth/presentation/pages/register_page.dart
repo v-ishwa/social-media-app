@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_media_app/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:social_media_app/features/auth/presentation/widgets/auth_text_field.dart';
 import 'package:social_media_app/features/auth/presentation/widgets/login_button.dart';
 
@@ -15,6 +17,38 @@ class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  void register() {
+    final name = nameController.text.trim();
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    final confirmPassword = confirmPasswordController.text.trim();
+
+    final authCubit = context.read<AuthCubit>();
+
+    if (name.isNotEmpty && email.isNotEmpty && password.isNotEmpty) {
+      if (password == confirmPassword) {
+        authCubit.register(name, email, password);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('password does not match')),
+        );
+      }
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('please fill all the fields')),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 25),
-                LoginButton(onTap: () {}, text: 'Register'),
+                LoginButton(onTap: register, text: 'Register'),
                 const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_media_app/features/auth/presentation/cubits/auth_cubit.dart';
 import 'package:social_media_app/features/auth/presentation/cubits/auth_states.dart';
 import 'package:social_media_app/features/auth/presentation/pages/auth_page.dart';
-import 'package:social_media_app/features/post/presentation/pages/home_page.dart';
+import 'package:social_media_app/features/home/presentation/pages/home_page.dart';
 import 'package:social_media_app/themes/light_mode.dart';
 import 'package:social_media_app/features/auth/data/firebase_auth_repo.dart';
 
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AuthCubit(authRepo: authRepo)..checkAuth(),
-      child: MaterialApp(
+        child: MaterialApp(
         title: 'Social Media App',
         theme: lightMode,
         debugShowCheckedModeBanner: false,
